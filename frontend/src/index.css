@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add these styles for Swiper */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #4f46e5 !important;
+}
+
+.swiper-pagination-bullet {
+  background: #4f46e5 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #4f46e5 !important;
+}
+
+/* Dark mode styles */
+.dark .swiper-button-next,
+.dark .swiper-button-prev {
+  color: #818cf8 !important;
+}
+
+.dark .swiper-pagination-bullet {
+  background: #818cf8 !important;
+}
+
+.dark .swiper-pagination-bullet-active {
+  background: #818cf8 !important;
+}

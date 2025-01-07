@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
@@ -9,6 +9,9 @@ const Login = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message;
+  const returnTo = location.state?.returnTo || '/posts';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,24 +24,20 @@ const Login = () => {
       const response = await axios.post('http://localhost:3000/user/loginUser', formData);
       
       if (response.data) {
-        console.log('Login successful:', response.data);
-        // Store user data or token in localStorage if your backend provides it
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
         }
         if (response.data.user) {
           localStorage.setItem('user', JSON.stringify(response.data.user));
         }
-        // Redirect to home page after successful login
-        navigate('/posts');
+        navigate(returnTo);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password');
-      console.error('Login error:', err);
     }
   };
  
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
@@ -53,6 +52,11 @@ const Login = () => {
             </Link>
           </p>
         </div>
+        {message && (
+          <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+            <span className="block sm:inline">{message}</span>
+          </div>
+        )}
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
